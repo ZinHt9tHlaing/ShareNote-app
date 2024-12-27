@@ -9,7 +9,7 @@ const Notes = () => {
   return (
     <div className="w-2/5 border-t-4 border-t-teal-600 shadow-lg p-3">
       <h3 className="text-xl font-medium">Lorem ipsum dolor sit amet.</h3>
-      <p className="text-sm line-clamp-4">
+      <p className="text-sm line-clamp-3 text-gray-500 mt-2">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Modi ullam
         recusandae autem accusantium dicta assumenda, alias molestiae laboriosam
         tempore asperiores quam, aliquam voluptatem. Odit expedita quos

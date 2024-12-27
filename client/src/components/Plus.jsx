@@ -5,7 +5,7 @@ const Plus = () => {
   return (
     <Link
       to={"/create"}
-      className="bg-teal-600 p-2 fixed text-white rounded-full bottom-28 right-32 active:scale-90 duration-200"
+      className="bg-teal-600 p-2 absolute text-white rounded-full bottom-28 right-52 hover:scale-105 active:scale-90 duration-200"
     >
       <PlusIcon width={30} height={30} />
     </Link>
