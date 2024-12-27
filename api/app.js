@@ -2,10 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
 // route
-const noteRoute = require("./routes/note")
+const noteRoute = require("./routes/note");
 
 const app = express();
 
@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(noteRoute)
+app.use(noteRoute);
 
 // db connect
 mongoose

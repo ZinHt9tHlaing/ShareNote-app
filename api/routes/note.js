@@ -7,6 +7,9 @@ const router = express.Router();
 // GET /notes
 router.get("/notes", noteController.getNotes);
 
+// GET /notes/:id
+router.get("/notes/:id", noteController.getDetailNote);
+
 // POST /notes
 router.post(
   "/create",
