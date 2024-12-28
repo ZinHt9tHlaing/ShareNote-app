@@ -23,5 +23,6 @@ const noteSchema = new Schema(
   }
 );
 
-const nodeModel = model("Note", noteSchema);
-module.exports = nodeModel;
+const noteModel = model("Note", noteSchema);
+
+module.exports = noteModel;

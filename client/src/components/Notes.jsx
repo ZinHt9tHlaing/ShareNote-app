@@ -5,9 +5,22 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
+import { useContext } from "react";
+import { GeneralContext } from "../context/GeneralContext";
 
-const Notes = ({ note }) => {
+const Notes = ({ note, getNotes }) => {
   const { _id, title, content, createdAt } = note;
+  const { customAlert } = useContext(GeneralContext);
+
+  const deleteNote = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API}/delete/${_id}`, {
+      method: "delete",
+    });
+    if (res.status === 204) {
+      customAlert("Post deleted");
+      getNotes();
+    }
+  };
 
   return (
     <div className="w-2/5 h-fit border-t-4 border-t-teal-600 shadow-lg p-3">
@@ -23,6 +36,7 @@ const Notes = ({ note }) => {
           <TrashIcon
             width={20}
             className="text-red-600 cursor-pointer select-none active:scale-90 duration-200"
+            onClick={deleteNote}
           />
           <Link to={`/edit/${_id}`}>
             <PencilSquareIcon

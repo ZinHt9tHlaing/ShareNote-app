@@ -28,4 +28,7 @@ router.post(
   noteController.createNote
 );
 
+// DELETE /delete/:id
+router.delete("/delete/:id",noteController.deleteNote)
+
 module.exports = router;

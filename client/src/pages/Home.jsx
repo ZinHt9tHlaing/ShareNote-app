@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Notes, Plus } from "../components";
 import { Watch } from "react-loader-spinner";
+import { toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
@@ -17,12 +18,17 @@ const Home = () => {
   useEffect(() => {
     getNotes();
   }, []);
+
   return (
-    <section className="flex w-[90%] mx-auto justify-center gap-4 px-6">
+    <section className="flex w-[90%] flex-wrap md:ps-28 pe-0 gap-4 ms-auto md:mx-auto">
       {!isLoading && notes.length > 0 ? (
         <>
           {notes.map((note) => (
-            <Notes key={note._id} note={note} />
+            <Notes
+              key={note._id}
+              note={note}
+              getNotes={getNotes}
+            />
           ))}
         </>
       ) : (
@@ -39,6 +45,18 @@ const Home = () => {
           />
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Plus />
     </section>
   );
