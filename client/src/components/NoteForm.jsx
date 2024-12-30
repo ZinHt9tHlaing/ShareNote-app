@@ -1,17 +1,37 @@
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
 import { StyledFormError } from "./index";
 import * as yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { LoaderCircle } from "lucide-react";
 
 const NoteForm = ({ isCreate }) => {
   const [redirect, setRedirect] = useState(false);
+  const [oldNote, setOldNote] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { id } = useParams();
+
+  const getOldNote = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API}/edit/${id}`);
+    if (res.status === 200) {
+      const noteData = await res.json();
+      setOldNote(noteData);
+    }
+  };
+
+  useEffect(() => {
+    if (!isCreate) {
+      getOldNote();
+    }
+  }, []);
 
   const initialValues = {
-    title: "",
-    content: "",
+    title: isCreate ? "" : oldNote.title,
+    content: isCreate ? "" : oldNote.content,
+    note_id: isCreate ? "" : oldNote._id,
   };
 
   const NoteFormSchema = yup.object({
@@ -26,43 +46,43 @@ const NoteForm = ({ isCreate }) => {
       .required("Content is required."),
   });
 
-  // const validate = (values) => {
-  //   const errors = {};
-
-  //   if (values.title.trim().length < 10) {
-  //     errors.title = "Title must have 10 length.";
-  //   }
-  //   if (values.content.trim().length < 10) {
-  //     errors.content = "Content must have 10 length.";
-  //   }
-  //   return errors;
-  // };
-
   const submitHandler = async (values) => {
-    if (isCreate) {
-      const res = await fetch(`${import.meta.env.VITE_API}/create`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+    setIsLoading(true);
+    let API = `${import.meta.env.VITE_API}/create`;
+    let method;
 
-      if (res.status === 201) {
-        setRedirect(true);
-      } else {
-        toast.error("Something went wrong!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+    if (isCreate) {
+      API = `${import.meta.env.VITE_API}/create`;
+      method = "post";
+    } else {
+      API = `${import.meta.env.VITE_API}/edit`;
+      method = "put";
     }
+
+    const res = await fetch(API, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (res.status === 201 || res.status === 200) {
+      setRedirect(true);
+    } else {
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    setIsLoading(false);
   };
 
   if (redirect) {
@@ -70,7 +90,7 @@ const NoteForm = ({ isCreate }) => {
   }
 
   return (
-    <section>
+    <section className="w-[95%] md:w-[65%] mx-auto">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -100,6 +120,7 @@ const NoteForm = ({ isCreate }) => {
         initialValues={initialValues}
         validationSchema={NoteFormSchema}
         onSubmit={submitHandler}
+        enableReinitialize={true}
       >
         {({ errors, touched }) => (
           <Form>
@@ -129,11 +150,17 @@ const NoteForm = ({ isCreate }) => {
               />
               <StyledFormError name={"content"} />
             </div>
+            <Field type="text" name="note_id" id="note_id" hidden />
             <button
               type="submit"
               className=" w-full bg-teal-600 rounded-lg text-white py-2 px-3 font-medium active:scale-95 duration-200"
             >
-              {isCreate ? "Create" : "Update"}
+              <div className="flex justify-center items-center gap-2">
+                {isLoading && (
+                  <LoaderCircle className="animate-spin text-white" size={25} />
+                )}
+                {isCreate ? "Create Note" : "Update Note"}
+              </div>
             </button>
           </Form>
         )}

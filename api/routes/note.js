@@ -28,6 +28,12 @@ router.post(
   noteController.createNote
 );
 
+// GET /edit/:id
+router.get("/edit/:id", noteController.getOldNote);
+
+// PUT /edit/:id
+router.put("/edit/", noteController.updateNote);
+
 // DELETE /delete/:id
 router.delete("/delete/:id",noteController.deleteNote)
 

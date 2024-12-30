@@ -24,7 +24,7 @@ const Notes = ({ note, getNotes }) => {
 
   return (
     <div className="w-2/5 h-fit border-t-4 border-t-teal-600 shadow-lg p-3">
-      <h3 className="text-xl font-medium">{title}</h3>
+      <h3 className="text-xl line-clamp-2 font-medium">{title}</h3>
       <p className="text-sm line-clamp-3 text-gray-500 mt-2">
         {content.slice(0, 120)}
       </p>

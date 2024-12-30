@@ -32,9 +32,9 @@ const Details = () => {
               </button>
             </Link>
           </div>
-          <div className="w-full border-t-4 border-t-teal-600 shadow-lg p-3 mt-4">
+          <div className="px-10 mx-10 border-t-4 border-t-teal-600 shadow-lg py-3 mt-4">
             <h3 className="text-3xl font-semibold">{note.title}</h3>
-            <div>
+            <div className="flex gap-4 my-2">
               <p className="flex items-center gap-2 text-sm font-medium text-gray-600">
                 <UserIcon width={20} /> {note.author}
               </p>
@@ -45,7 +45,8 @@ const Details = () => {
                 </p>
               )}
             </div>
-            <p className="text-base mt-3">{note.content}</p>
+            <hr className="mt-1 mb-5 border-2" />
+            <p className="text-base mt-3 px-3">{note.content}</p>
           </div>
         </section>
       ) : (
