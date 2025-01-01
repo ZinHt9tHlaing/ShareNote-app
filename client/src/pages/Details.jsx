@@ -33,6 +33,13 @@ const Details = () => {
             </Link>
           </div>
           <div className="px-10 mx-10 border-t-4 border-t-teal-600 shadow-lg py-3 mt-4">
+            {note.cover_image && (
+              <img
+                src={`${import.meta.env.VITE_API}/${note.cover_image}`}
+                alt={note.title}
+                className="my-10 h-64 w-full object-cover"
+              />
+            )}
             <h3 className="text-3xl font-semibold">{note.title}</h3>
             <div className="flex gap-4 my-2">
               <p className="flex items-center gap-2 text-sm font-medium text-gray-600">

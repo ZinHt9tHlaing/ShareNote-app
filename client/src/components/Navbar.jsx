@@ -7,7 +7,9 @@ const Navbar = () => {
         SHARENOTE.io
       </Link>
       <div>
-        <Link to={"/create"} className="text-teal-600 font-medium">Hello</Link>
+        <Link to={"/create"} className="text-teal-600 font-medium">
+          Share
+        </Link>
       </div>
     </nav>
   );

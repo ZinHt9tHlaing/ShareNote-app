@@ -20,15 +20,11 @@ const Home = () => {
   }, []);
 
   return (
-    <section className="flex justify-center md:px-10 mt-10 flex-wrap gap-4 mx-auto">
+    <section className="flex w-[90%] flex-wrap md:ps-28 pe-0 gap-4 ms-auto md:mx-auto">
       {!isLoading && notes.length > 0 ? (
         <>
           {notes.map((note) => (
-            <Notes
-              key={note._id}
-              note={note}
-              getNotes={getNotes}
-            />
+            <Notes key={note._id} note={note} getNotes={getNotes} />
           ))}
         </>
       ) : (
