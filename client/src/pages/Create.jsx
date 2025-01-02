@@ -2,7 +2,7 @@ import { NoteForm } from "../components";
 
 const Create = () => {
   return (
-    <section className="px-10">
+    <section>
       <NoteForm isCreate={true} />
     </section>
   );

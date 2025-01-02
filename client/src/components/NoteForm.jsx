@@ -1,12 +1,15 @@
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { Link, Navigate, useParams } from "react-router-dom";
+
 import { Formik, Field, Form } from "formik";
-import { StyledFormError } from "./index";
 import * as yup from "yup";
+
 import { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { LoaderCircle } from "lucide-react";
-import { Upload } from "lucide-react";
+import { LoaderCircle, Upload } from "lucide-react";
+
+// formik custom error message
+import { StyledFormError } from "./index";
 
 const NoteForm = ({ isCreate }) => {
   const [redirect, setRedirect] = useState(false);
@@ -120,7 +123,7 @@ const NoteForm = ({ isCreate }) => {
   }
 
   return (
-    <section className="w-[95%] md:w-[65%] mx-auto">
+    <section className="w-2/3 md:w-1/2 mx-auto">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -136,7 +139,7 @@ const NoteForm = ({ isCreate }) => {
       {/* Same as */}
       <ToastContainer />
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-xl font-semibold">
+        <h1 className="text-2xl font-semibold text-teal-600">
           {isCreate ? "Create a new note" : "Edit your note here"}
         </h1>
         <Link to={"/"}>
