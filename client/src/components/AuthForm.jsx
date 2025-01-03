@@ -20,15 +20,17 @@ const AuthForm = ({ isLogin }) => {
   };
 
   const authFormSchema = yup.object({
-    username: yup
-      .string()
-      .min(3, "Username is too short!")
-      .max(10, "Username is too long!")
-      .required("Username is required!"),
+    username: isLogin
+      ? null
+      : yup
+          .string()
+          .min(3, "Username is too short!")
+          .max(10, "Username is too long!")
+          .required("Username is required!"),
     email: yup
       .string()
-      .email("Please enter a valid email format!")
-      .required("Email is required!"),
+      .required("Email is required!")
+      .email("Please enter an vaild email!"),
     password: yup
       .string()
       .min(4, "Password is too short!")
@@ -36,42 +38,50 @@ const AuthForm = ({ isLogin }) => {
   });
 
   const submitHandler = async (values) => {
-    const { username, email, password } = values;
-
     setIsLoading(true);
-    if (isLogin) {
-      console.log("Hello");
-    } else {
-      const res = await fetch(`${import.meta.env.VITE_API}/register`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-      if (res.status === 201) {
-        setRedirect(true);
-      } else if (res.status === 400) {
-        const data = await res.json();
-        const pickedMessage = data.errorMessage[0].msg;
 
-        toast.error(pickedMessage, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+    const { email, password, username } = values;
+    let END_POINT = `${import.meta.env.VITE_API}/register`;
+
+    if (isLogin) {
+      END_POINT = `${import.meta.env.VITE_API}/login`;
     }
+    const response = await fetch(END_POINT, {
+      method: "POST",
+      body: JSON.stringify({ email, password, username }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const toastFire = (message) => {
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    };
+
+    const responseData = await response.json();
+    if (response.status === 201 || response.status === 200) {
+      setRedirect(true);
+    } else if (response.status === 400) {
+      const pickedMessage = responseData.errorMessages[0].msg;
+      toastFire(pickedMessage);
+    } else if (response.status === 401) {
+      toastFire(responseData.message);
+    }
+
     setIsLoading(false);
   };
 
   if (redirect) {
-    return <Navigate to={"/"} />;
+    return <Navigate to={isLogin ? "/" : "/login"} />;
   }
 
   return (

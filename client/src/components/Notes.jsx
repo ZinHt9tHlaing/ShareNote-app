@@ -5,17 +5,29 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
-import { useContext } from "react";
-import { GeneralContext } from "../context/GeneralContext";
+import { toast } from "react-toastify";
 
 const Notes = ({ note, getNotes }) => {
   const { _id, title, content, createdAt } = note;
-  const { customAlert } = useContext(GeneralContext);
 
   const deleteNote = async () => {
     const res = await fetch(`${import.meta.env.VITE_API}/delete/${_id}`, {
       method: "delete",
     });
+
+    const customAlert = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    };
+
     if (res.status === 204) {
       customAlert("Post deleted");
       getNotes();

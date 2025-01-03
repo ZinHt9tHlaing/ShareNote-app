@@ -44,7 +44,7 @@ exports.createNote = (req, res, next) => {
     // true condition
     return res.status(400).json({
       message: "Validation failed.",
-      errorMessage: errors.array(),
+      errorMessages: errors.array(),
     });
   }
 

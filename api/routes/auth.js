@@ -32,7 +32,7 @@ router.post(
       .custom((value, { req }) => {
         return User.findOne({ email: value }).then((emailDocument) => {
           if (emailDocument) {
-            return Promise.reject("E-mail is already existed!");
+            return Promise.reject("E-mail already exists!");
           }
         });
       }),
@@ -45,6 +45,19 @@ router.post(
 );
 
 // POST /login
-router.post("/login", authController.login);
+router.post(
+  "/login",
+  [
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email format!")
+      .normalizeEmail(),
+    body("password")
+      .trim()
+      .isLength({ min: 4 })
+      .withMessage("Password is too short!"),
+  ],
+  authController.login
+);
 
 module.exports = router;
