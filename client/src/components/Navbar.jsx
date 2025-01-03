@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -6,10 +6,33 @@ const Navbar = () => {
       <Link to={"/"} className="text-teal-600 font-bold text-3xl">
         SHARENOTE.io
       </Link>
-      <div>
-        <Link to={"/create"} className="text-teal-600 font-medium">
+      <div className="flex items-center gap-3">
+        <Link
+          to={"/create"}
+          className="text-white bg-teal-600 me-3 px-2 py-1 rounded-md font-medium active:scale-95 duration-200"
+        >
           Share
         </Link>
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive
+              ? "text-teal-600 text-lg font-semibold border-b-2 border-b-teal-600 active:scale-95 -transition-all duration-200"
+              : "text-teal-500 font-medium active:scale-95"
+          }
+        >
+          Login
+        </NavLink>
+        <NavLink
+          to={"/register"}
+          className={({ isActive }) =>
+            isActive
+              ? "text-teal-600 text-lg font-semibold border-b-2 border-b-teal-600 -transition-all active:scale-95 duration-200"
+              : "text-teal-500 font-medium active:scale-95"
+          }
+        >
+          Register
+        </NavLink>
       </div>
     </nav>
   );

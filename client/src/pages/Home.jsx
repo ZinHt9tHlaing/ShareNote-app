@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Notes, Plus } from "../components";
 import { TailSpin } from "react-loader-spinner";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Home = () => {

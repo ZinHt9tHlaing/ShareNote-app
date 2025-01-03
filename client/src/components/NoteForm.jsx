@@ -136,8 +136,6 @@ const NoteForm = ({ isCreate }) => {
         pauseOnHover
         theme="light"
       />
-      {/* Same as */}
-      <ToastContainer />
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold text-teal-600">
           {isCreate ? "Create a new note" : "Edit your note here"}
@@ -236,7 +234,7 @@ const NoteForm = ({ isCreate }) => {
             >
               <div className="flex justify-center items-center gap-2">
                 {isLoading && (
-                  <LoaderCircle className="animate-spin text-white" size={25} />
+                  <LoaderCircle className="animate-spin text-white" size={22} />
                 )}
                 {isCreate ? "Create Note" : "Update Note"}
               </div>

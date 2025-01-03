@@ -2,12 +2,16 @@ import { Field, Form, Formik } from "formik";
 import { LoaderCircle } from "lucide-react";
 import * as yup from "yup";
 
+import { Navigate } from "react-router-dom";
+
 // formik custom error message
 import StyledFormError from "./StyledFormError";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 const AuthForm = ({ isLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const initialValues = {
     username: "",
@@ -19,26 +23,71 @@ const AuthForm = ({ isLogin }) => {
     username: yup
       .string()
       .min(3, "Username is too short!")
-      .max(15, "Username is too long!")
+      .max(10, "Username is too long!")
       .required("Username is required!"),
     email: yup
       .string()
-      .required("Email is required!")
-      .email("Please enter a valid email format!"),
+      .email("Please enter a valid email format!")
+      .required("Email is required!"),
     password: yup
       .string()
-      .required("Password is required!")
-      .min(4, "Password is too short!"),
+      .min(4, "Password is too short!")
+      .required("Password is required!"),
   });
 
-  const submitHandler = (values) => {
+  const submitHandler = async (values) => {
+    const { username, email, password } = values;
+
     setIsLoading(true);
-    console.log(values);
+    if (isLogin) {
+      console.log("Hello");
+    } else {
+      const res = await fetch(`${import.meta.env.VITE_API}/register`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+      if (res.status === 201) {
+        setRedirect(true);
+      } else if (res.status === 400) {
+        const data = await res.json();
+        const pickedMessage = data.errorMessage[0].msg;
+
+        toast.error(pickedMessage, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
     setIsLoading(false);
   };
 
+  if (redirect) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
     <section className="w-2/3 md:w-1/2 mx-auto">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <h1 className="text-center text-teal-600 font-semibold text-3xl my-4">
         {isLogin ? "Login" : "Register"}
       </h1>
@@ -98,7 +147,7 @@ const AuthForm = ({ isLogin }) => {
             >
               <div className="flex justify-center items-center gap-2">
                 {isLoading && (
-                  <LoaderCircle className="animate-spin text-white" size={25} />
+                  <LoaderCircle className="animate-spin text-white" size={22} />
                 )}
                 {isLogin ? "Login" : "Register"}
               </div>
