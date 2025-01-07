@@ -4,12 +4,13 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { LoaderCircle, Upload } from "lucide-react";
 
 // formik custom error message
 import { StyledFormError } from "./index";
+import { UserContext } from "../contexts/UserContext";
 
 const NoteForm = ({ isCreate }) => {
   const [redirect, setRedirect] = useState(false);
@@ -17,6 +18,8 @@ const NoteForm = ({ isCreate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [previewImg, setPreviewImg] = useState(null);
   const fileRef = useRef();
+
+  const { token } = useContext(UserContext);
 
   const { id } = useParams();
 
@@ -98,6 +101,9 @@ const NoteForm = ({ isCreate }) => {
     const res = await fetch(API, {
       method,
       body: formData,
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
     });
 
     if (res.status === 201 || res.status === 200) {

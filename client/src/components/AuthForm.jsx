@@ -6,12 +6,15 @@ import { Navigate } from "react-router-dom";
 
 // formik custom error message
 import StyledFormError from "./StyledFormError";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { UserContext } from "../contexts/UserContext";
 
 const AuthForm = ({ isLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
+
+  const { setToken } = useContext(UserContext);
 
   const initialValues = {
     username: "",
@@ -68,7 +71,11 @@ const AuthForm = ({ isLogin }) => {
     };
 
     const responseData = await response.json();
-    if (response.status === 201 || response.status === 200) {
+    console.log(responseData);
+    if (response.status === 201) {
+      setRedirect(true);
+    } else if (response.status === 200) {
+      setToken(responseData);
       setRedirect(true);
     } else if (response.status === 400) {
       const pickedMessage = responseData.errorMessages[0].msg;
